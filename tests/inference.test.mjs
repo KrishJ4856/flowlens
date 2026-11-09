@@ -54,3 +54,10 @@ test('Full-test parity report contains zero decision mismatches', () => {
   assert.equal(r.predictionMismatches.xgboost, 0);
   assert.equal(r.predictionMismatches.randomforest, 0);
 });
+
+test('Numbers that overflow the model Float32 input range fail clearly', () => {
+  assert.throws(
+    () => prepare({ ...fixtures[0].values, dur: 1e50 }, manifest),
+    /exceeds the numeric range/,
+  );
+});

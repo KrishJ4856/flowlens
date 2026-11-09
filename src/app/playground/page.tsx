@@ -53,7 +53,7 @@ export default function Playground() {
       values[name] !== '' &&
       values[name] !== null &&
       values[name] !== undefined &&
-      (!Number.isFinite(Number(values[name])) || Number(values[name]) < 0),
+      (!Number.isFinite(Math.fround(Number(values[name]))) || Number(values[name]) < 0),
   );
   function choose(record: Sample) {
     setSample(record);
@@ -170,7 +170,7 @@ export default function Playground() {
           if (
             !['proto', 'service', 'state'].includes(name) &&
             raw !== '' &&
-            (!Number.isFinite(Number(raw)) || Number(raw) < 0)
+            (!Number.isFinite(Math.fround(Number(raw))) || Number(raw) < 0)
           ) {
             setError(`Invalid number in ${name}.`);
             return;

@@ -9,6 +9,8 @@ export function prepare(values, manifest) {
     if (!Number.isFinite(number) || number < 0)
       throw new Error(`${name} needs a finite, non-negative number, or a blank value.`);
     result[i] = number;
+    if (!Number.isFinite(result[i]))
+      throw new Error(`${name} exceeds the numeric range supported by the trained models.`);
   }
   let offset = manifest.numeric.length;
   for (let i = 0; i < manifest.categorical.length; i++) {
