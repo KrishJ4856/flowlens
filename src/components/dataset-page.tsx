@@ -14,7 +14,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
-import { Explain, Note, PageHeading } from '@/components/common';
+import { Explain, PageHeading } from '@/components/common';
 import { details, formatNumber, readGzip, repository, type Values } from '@/lib/features';
 type RecordRow = Record<string, string | number>;
 type DatasetMeta = {
@@ -151,105 +151,45 @@ export function DatasetPage({ partition }: { partition: 'train' | 'test' }) {
   return (
     <div className="container page-content">
       <PageHeading
-        eyebrow={train ? 'THE EXAMPLES USED FOR LEARNING' : 'THE SEPARATE FINAL EXAM'}
         title={train ? 'Training data' : 'Testing data'}
         description={
           train
-            ? 'These recorded network flows taught the models which measurement patterns tend to appear in normal communications and attacks.'
-            : 'These records checked the frozen models after training and validation. The models made predictions before we compared them with these known answers.'
+            ? 'The examples used to teach the models.'
+            : 'The separate records used to check them.'
         }
       >
         <Button asChild variant="outline" size="sm">
           <a
             href={`https://raw.githubusercontent.com/KrishJ4856/flowlens/main/ml/data/raw/${partition}.csv`}
           >
-            <Download size={14} /> Download full CSV
+            <Download size={15} /> Download CSV
           </a>
         </Button>
       </PageHeading>
-      <div className="metric-grid">
-        <div className="metric-box">
-          <span className="metric-label">
-            Recorded flows{' '}
-            <Explain>
-              One row summarizes one communication. The dataset does not contain the text of
-              messages.
-            </Explain>
-          </span>
-          <strong>{meta ? formatNumber(meta.rows) : '…'}</strong>
-          <small>{train ? 'Available to learn from' : 'Used for final scoring'}</small>
+      <div className="dataset-summary">
+        <div>
+          <strong>{meta ? formatNumber(meta.rows) : '—'}</strong>
+          <span>records</span>
         </div>
-        <div className="metric-box">
-          <span className="metric-label">Input measurements</span>
-          <strong>42</strong>
-          <small>39 numeric · 3 categorical</small>
+        <div>
+          <i className="inline-dot" />
+          <strong>{meta ? formatNumber(normal) : '—'}</strong>
+          <span>Normal</span>
         </div>
-        <div className="metric-box">
-          <span className="metric-label">Normal flows</span>
-          <strong>{meta ? formatNumber(normal) : '…'}</strong>
-          <small>Known label = 0</small>
+        <div>
+          <i className="inline-dot attack" />
+          <strong>{meta ? formatNumber(attack) : '—'}</strong>
+          <span>Attack</span>
         </div>
-        <div className="metric-box">
-          <span className="metric-label">Attack flows</span>
-          <strong>{meta ? formatNumber(attack) : '…'}</strong>
-          <small>Known label = 1</small>
-        </div>
+        <span className="dataset-features">
+          42 measurements{' '}
+          <Explain>
+            Each row has 42 inputs, an ID and two answer columns. The ID, label and attack_cat are
+            excluded from prediction inputs.
+          </Explain>
+        </span>
       </div>
-      <div className="data-intro">
-        <section className="panel">
-          <h2>{train ? 'How this data was used' : 'What makes this a fairer check?'}</h2>
-          <p>
-            {train
-              ? 'We first split the training file into fitting and validation records. Validation helped choose settings. After freezing those choices, we fitted the chosen configurations on the full training file.'
-              : 'The test file was kept out of model selection. Its answers were used to score the frozen predictions. Some measurement patterns repeat across the two files, so a separate no-exact-match view is reported too.'}
-          </p>
-          {train && (
-            <div className="distribution-legend mt-4">
-              <span>140,273 fitting rows</span>
-              <span>35,068 validation rows</span>
-            </div>
-          )}
-          {!train && (
-            <a href="/analysis/" className="subtle-link mt-3">
-              Understand the overlap check <ArrowRight size={12} />
-            </a>
-          )}
-        </section>
-        <section className="panel">
-          <h2>What kinds of examples are here?</h2>
-          <p>
-            Both normal traffic and known attacks. The labels are available for learning and
-            checking—they are never given as prediction inputs.
-          </p>
-          <div
-            className="distribution-bar"
-            aria-label={`${normal} normal and ${attack} attack records`}
-          >
-            <span style={{ width: `${(normal / (meta?.rows || 1)) * 100}%` }} />
-            <span style={{ width: `${(attack / (meta?.rows || 1)) * 100}%` }} />
-          </div>
-          <div className="distribution-legend">
-            <span>
-              <i className="inline-dot" />
-              Normal {meta ? `${((normal / meta.rows) * 100).toFixed(1)}%` : ''}
-            </span>
-            <span>
-              <i className="inline-dot blue" />
-              Attack {meta ? `${((attack / meta.rows) * 100).toFixed(1)}%` : ''}
-            </span>
-          </div>
-        </section>
-      </div>
-      <section className="panel">
-        <div className="panel-header">
-          <div>
-            <h2>Look inside the records</h2>
-            <p>
-              Browse the complete partition. Inspect a row to see all measurements or try it in the
-              playground.
-            </p>
-          </div>
-        </div>
+      <section className="panel data-panel">
         <div className="data-toolbar">
           <div className="data-filters">
             <label htmlFor="dataset-filter" className="sr-only">
@@ -281,8 +221,8 @@ export function DatasetPage({ partition }: { partition: 'train' | 'test' }) {
               size="sm"
               onClick={() => setFull(!full)}
             >
-              <TableProperties size={13} />
-              {full ? 'Key columns' : 'All 45 columns'}
+              <TableProperties size={14} />
+              {full ? 'Key columns' : 'All columns'}
             </Button>
           </div>
           <form className="data-search" onSubmit={findRecord}>
@@ -295,15 +235,21 @@ export function DatasetPage({ partition }: { partition: 'train' | 'test' }) {
               placeholder="Record ID"
               aria-label="Find a record by ID"
             />
-            <Button type="submit" variant="outline" size="sm" disabled={searching || !search}>
-              {searching ? <LoaderCircle className="spin" size={13} /> : <Search size={13} />} Find
+            <Button
+              type="submit"
+              variant="outline"
+              size="sm"
+              disabled={searching || !search}
+              aria-label="Find record"
+            >
+              {searching ? <LoaderCircle className="spin" size={15} /> : <Search size={15} />}
             </Button>
           </form>
         </div>
         {error && (
           <div className="error-message" role="alert">
             {error}{' '}
-            <button onClick={() => setAttempt((a) => a + 1)} className="underline">
+            <button className="underline" onClick={() => setAttempt((a) => a + 1)}>
               Retry
             </button>
           </div>
@@ -315,16 +261,16 @@ export function DatasetPage({ partition }: { partition: 'train' | 'test' }) {
         >
           {loading || !meta ? (
             <div className="loading">
-              <LoaderCircle className="spin" size={19} /> Loading recorded flows…
+              <LoaderCircle className="spin" size={18} /> Loading records…
             </div>
           ) : (
             <table className="data-table">
               <thead>
                 <tr>
-                  <th>Inspect</th>
+                  <th>Record</th>
                   {columns.map((col) => (
                     <th key={col}>
-                      {col === 'label' ? 'Known answer' : col === 'attack_cat' ? 'Category' : col}
+                      {col === 'label' ? 'Answer' : col === 'attack_cat' ? 'Category' : col}
                       {details[col] && <Explain>{details[col][1]}</Explain>}
                     </th>
                   ))}
@@ -340,13 +286,13 @@ export function DatasetPage({ partition }: { partition: 'train' | 'test' }) {
                         onClick={() => setSelected(record)}
                         aria-label={`Inspect record ${record.id}`}
                       >
-                        <Eye size={12} /> View
+                        <Eye size={13} /> View
                       </Button>
                     </td>
                     {columns.map((col) => (
                       <td key={col}>
                         {col === 'label' ? (
-                          <span className={`pill ${record[col] === 0 ? 'teal' : 'amber'}`}>
+                          <span className={`pill ${record[col] === 0 ? 'normal' : 'attack'}`}>
                             {record[col] === 0 ? 'Normal' : 'Attack'}
                           </span>
                         ) : (
@@ -364,7 +310,7 @@ export function DatasetPage({ partition }: { partition: 'train' | 'test' }) {
           <span>
             {loading
               ? 'Loading…'
-              : `${formatNumber(page * 25 + 1)}–${formatNumber(Math.min((page + 1) * 25, count))} of ${formatNumber(count)} records`}
+              : `${formatNumber(page * 25 + 1)}–${formatNumber(Math.min((page + 1) * 25, count))} of ${formatNumber(count)}`}
           </span>
           <div className="pagination">
             <Button
@@ -374,10 +320,10 @@ export function DatasetPage({ partition }: { partition: 'train' | 'test' }) {
               onClick={() => setPage((p) => p - 1)}
               aria-label="Previous page"
             >
-              <ChevronLeft size={14} />
+              <ChevronLeft size={15} />
             </Button>
             <span>
-              Page {page + 1} of {formatNumber(pages || 1)}
+              {page + 1} / {formatNumber(pages || 1)}
             </span>
             <Button
               size="sm"
@@ -386,64 +332,66 @@ export function DatasetPage({ partition }: { partition: 'train' | 'test' }) {
               onClick={() => setPage((p) => p + 1)}
               aria-label="Next page"
             >
-              <ChevronRight size={14} />
+              <ChevronRight size={15} />
             </Button>
           </div>
         </div>
       </section>
-      <div className="mt-5">
-        <Note>
-          <b>Where does this come from?</b> UNSW-NB15 is a labelled network-traffic benchmark. We
-          kept the original frequencies and documented duplicates and conflicting labels.{' '}
+      <div className="data-bottom">
+        <span>Open a record to inspect all measurements or try it in the playground.</span>
+        <details className="explainer">
+          <summary>About this dataset</summary>
+          <p>
+            UNSW-NB15 records describe network communications, not message contents. Normal is label
+            0; Attack is label 1.
+          </p>
+          <p>
+            {train
+              ? 'Training was split into 140,273 fitting and 35,068 validation rows. After choosing settings, both models were refitted on all training rows.'
+              : 'Test answers were used only after model choices were frozen. Some measurements repeat training patterns; the Analysis page reports a separate no-exact-match view.'}
+          </p>
           <a
             href={`${repository}/blob/main/ml/data/source_manifest.json`}
-            className="underline"
             target="_blank"
             rel="noreferrer"
+            className="text-link"
           >
-            View the source record
+            View data sources <ArrowRight size={13} />
           </a>
-          .
-        </Note>
+        </details>
       </div>
       <Dialog open={!!selected} onOpenChange={(open) => !open && setSelected(null)}>
         <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
-          <DialogTitle>
-            Record {selected?.id} · {train ? 'Training' : 'Testing'} data
-          </DialogTitle>
+          <DialogTitle>Record {selected?.id}</DialogTitle>
           <DialogDescription>
-            All 42 measurements below become model inputs. The ID and known answers stay separate.
+            {train ? 'Training' : 'Testing'} data · 42 measurements
           </DialogDescription>
           {selected && (
             <>
-              <div className="flex flex-wrap items-center gap-3 my-2">
-                <span className={`pill ${Number(selected.label) === 0 ? 'teal' : 'amber'}`}>
-                  Known answer: {Number(selected.label) === 0 ? 'Normal' : 'Attack'}
+              <div className="record-dialog-actions">
+                <span className={`pill ${Number(selected.label) === 0 ? 'normal' : 'attack'}`}>
+                  Actual: {Number(selected.label) === 0 ? 'Normal' : 'Attack'}
                 </span>
-                <span className="pill">{selected.attack_cat}</span>
-                <Button className="ml-auto" size="sm" onClick={() => useRecord(selected)}>
-                  Try this record <ArrowRight size={13} />
+                <span className="record-category">{selected.attack_cat}</span>
+                <Button size="sm" onClick={() => useRecord(selected)}>
+                  Try in playground <ArrowRight size={14} />
                 </Button>
               </div>
-              {train && (
-                <Note>
-                  This is a training record the models learned from. A correct prediction here is
-                  not independent test evidence.
-                </Note>
-              )}
-              <div className="grid grid-cols-2 gap-x-6 gap-y-3 mt-3">
+              {train && <p className="inline-note">Training example—not an independent test.</p>}
+              <div className="record-fields">
                 {Object.entries(selected)
                   .filter(([name]) => !['id', 'label', 'attack_cat'].includes(name))
                   .map(([name, value]) => (
-                    <div key={name} className="border-b pb-2 min-w-0">
-                      <div className="text-[10px] text-muted-foreground flex items-center gap-1">
+                    <div key={name}>
+                      <span>
                         {details[name]?.[0] || name}
-                        <Explain>{details[name]?.[1]}</Explain>
-                      </div>
-                      <div className="text-sm mt-1 break-all font-mono">{value}</div>
-                      <div className="text-[9px] text-muted-foreground font-mono mt-0.5">
-                        {name}
-                      </div>
+                        <Explain>
+                          <b>{name}</b>
+                          <br />
+                          {details[name]?.[1]}
+                        </Explain>
+                      </span>
+                      <b>{value}</b>
                     </div>
                   ))}
               </div>

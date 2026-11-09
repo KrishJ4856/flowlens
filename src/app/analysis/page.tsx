@@ -1,7 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { ArrowRight, CheckCircle2, LoaderCircle, Download } from 'lucide-react';
+import { ArrowUpRight, LoaderCircle } from 'lucide-react';
 import {
   BarChart,
   Bar,
@@ -11,10 +10,8 @@ import {
   Tooltip,
   ResponsiveContainer,
   Legend,
-  Cell,
 } from 'recharts';
-import { PageHeading, Explain, Note } from '@/components/common';
-import { Button } from '@/components/ui/button';
+import { PageHeading, Explain } from '@/components/common';
 import { formatNumber, repository } from '@/lib/features';
 type Metric = {
   model: string;
@@ -27,24 +24,19 @@ type Metric = {
   fp: number;
   fn: number;
   tp: number;
-  macro_f1: number;
   records: number;
 };
 type Analysis = {
   metrics: Metric[];
   importance: Record<string, { feature: string; importance: number }[]>;
-  trainingRows: number;
-  testingRows: number;
-  exactOverlap: number;
-  fitRows: number;
-  validationRows: number;
 };
 const tooltipStyle = {
   background: 'var(--popover)',
   border: '1px solid var(--border)',
   borderRadius: 9,
-  fontSize: 11,
+  fontSize: 13,
   color: 'var(--foreground)',
+  fontFamily: 'inherit',
 };
 export default function Analysis() {
   const [data, setData] = useState<Analysis | null>(null),
@@ -52,13 +44,17 @@ export default function Analysis() {
     [view, setView] = useState('official_test'),
     [error, setError] = useState('');
   useEffect(() => {
+    let active = true;
     fetch('/data/analysis.json')
       .then((r) => {
-        if (!r.ok) throw Error('The saved analysis could not be loaded.');
+        if (!r.ok) throw Error('Results could not be loaded.');
         return r.json();
       })
-      .then(setData)
-      .catch((e) => setError(e.message));
+      .then((d) => active && setData(d))
+      .catch((e) => active && setError(e.message));
+    return () => {
+      active = false;
+    };
   }, []);
   const chosen = data?.metrics.find((m) => m.model === model && m.subset === view),
     label = model === 'xgb_depth7' ? 'XGBoost' : 'Random Forest';
@@ -67,23 +63,16 @@ export default function Analysis() {
     return {
       name: name === 'xgb_depth7' ? 'XGBoost' : 'Random Forest',
       Accuracy: (m?.accuracy || 0) * 100,
-      'Attack recall': (m?.attack_recall || 0) * 100,
-      'False positive rate': (m?.false_positive_rate || 0) * 100,
+      'Attacks caught': (m?.attack_recall || 0) * 100,
+      'False alarms': (m?.false_positive_rate || 0) * 100,
     };
   });
   return (
     <div className="container page-content">
       <PageHeading
-        eyebrow="MEASURED RESULTS, EXPLAINED"
-        title="What did the models learn?"
-        description="A useful detector should catch attacks and avoid false alarms. These charts show both, using predictions from the frozen experiment."
-      >
-        <Button asChild variant="outline" size="sm">
-          <a href={`${repository}/blob/main/docs/REPORT.md`} target="_blank" rel="noreferrer">
-            <Download size={14} /> Full experiment report
-          </a>
-        </Button>
-      </PageHeading>
+        title="The results."
+        description="Catch attacks. Avoid false alarms. Both matter."
+      />
       {error && (
         <div className="error-message" role="alert">
           {error}
@@ -91,11 +80,11 @@ export default function Analysis() {
       )}
       {!data ? (
         <div className="loading">
-          <LoaderCircle className="spin" size={20} /> Loading measured results…
+          <LoaderCircle className="spin" size={18} /> Loading results…
         </div>
       ) : (
         <>
-          <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
+          <div className="analysis-toolbar">
             <div className="analysis-selector" aria-label="Model for detailed results">
               {[
                 ['xgb_depth7', 'XGBoost'],
@@ -111,336 +100,228 @@ export default function Analysis() {
                 </button>
               ))}
             </div>
-            <div className="flex items-center gap-2">
-              <label htmlFor="test-view" className="text-[10px] text-muted-foreground">
-                Test view
-              </label>
-              <select
-                id="test-view"
-                className="select-input"
-                value={view}
-                onChange={(e) => setView(e.target.value)}
-              >
-                <option value="official_test">Complete test · 82,332 records</option>
-                <option value="unseen_features">No exact training match · 73,791</option>
-                <option value="unique_unseen_feature_target">
-                  Unique unseen feature + answer · 52,648
-                </option>
-              </select>
-            </div>
+            <select
+              id="test-view"
+              aria-label="Test view"
+              className="select-input"
+              value={view}
+              onChange={(e) => setView(e.target.value)}
+            >
+              <option value="official_test">Complete test · 82,332</option>
+              <option value="unseen_features">No exact training match · 73,791</option>
+              <option value="unique_unseen_feature_target">Unique unseen records · 52,648</option>
+            </select>
           </div>
           {chosen && (
             <div className="metric-grid">
               <div className="metric-box">
-                <span className="metric-label">
+                <span>
                   Overall accuracy{' '}
-                  <Explain>
-                    All correct Normal/Attack decisions divided by all test records.
-                  </Explain>
+                  <Explain>All correct decisions divided by all records in this test view.</Explain>
                 </span>
-                <strong>{(chosen.accuracy * 100).toFixed(2)}%</strong>
-                <small>
-                  {label} · {formatNumber(chosen.records)} records
-                </small>
+                <strong>
+                  {(chosen.accuracy * 100).toFixed(2)}
+                  <small>%</small>
+                </strong>
+                <p>Correct decisions</p>
               </div>
               <div className="metric-box">
-                <span className="metric-label">
+                <span>
                   Attacks caught{' '}
-                  <Explain>
-                    Recall: the proportion of actual attacks that the detector correctly flagged.
-                  </Explain>
+                  <Explain>Recall: the proportion of actual attacks correctly flagged.</Explain>
                 </span>
-                <strong>{(chosen.attack_recall * 100).toFixed(2)}%</strong>
-                <small>Higher is better</small>
+                <strong>
+                  {(chosen.attack_recall * 100).toFixed(2)}
+                  <small>%</small>
+                </strong>
+                <p>Higher is better</p>
               </div>
               <div className="metric-box">
-                <span className="metric-label">
+                <span>
                   False alarms{' '}
                   <Explain>
-                    Normal records incorrectly flagged as Attack, divided by all actual normal
-                    records. This is the false positive rate.
+                    Normal records wrongly flagged, divided by all actual normal records. This is
+                    the false positive rate.
                   </Explain>
                 </span>
-                <strong style={{ color: 'var(--amber)' }}>
-                  {(chosen.false_positive_rate * 100).toFixed(2)}%
+                <strong className="amber-text">
+                  {(chosen.false_positive_rate * 100).toFixed(2)}
+                  <small>%</small>
                 </strong>
-                <small>Lower is better</small>
-              </div>
-              <div className="metric-box">
-                <span className="metric-label">
-                  Flags that were attacks{' '}
-                  <Explain>
-                    Precision: among all records flagged as Attack, how many really had an attack
-                    label?
-                  </Explain>
-                </span>
-                <strong>{(chosen.attack_precision * 100).toFixed(2)}%</strong>
-                <small>Attack precision</small>
+                <p>Lower is better</p>
               </div>
             </div>
           )}
-          <Note>
-            <b>The main trade-off:</b> both models catch roughly 98% of attacks on the complete
-            test, but wrongly flag about one in four normal records. These are useful benchmark
-            results with a substantial false-alarm limitation.
-          </Note>
+          <div className="analysis-note">
+            <span className="warning-dot" />
+            <b>The trade-off:</b> about 1 in 4 normal flows is wrongly flagged on the complete test.
+          </div>
           <div className="chart-grid">
             <section className="panel">
-              <h2>Two algorithms, side by side</h2>
-              <p className="chart-description">The same test records. Three different questions.</p>
+              <h2>Compare the models</h2>
               <div
                 className="chart-frame"
                 role="img"
-                aria-label={`Comparison: ${comparison.map((m) => `${m.name}: accuracy ${m.Accuracy.toFixed(2)}%, recall ${m['Attack recall'].toFixed(2)}%, false-positive rate ${m['False positive rate'].toFixed(2)}%`).join('; ')}`}
+                aria-label={`Test comparison: ${comparison.map((m) => `${m.name}, accuracy ${m.Accuracy.toFixed(2)}%, attacks caught ${m['Attacks caught'].toFixed(2)}%, false alarms ${m['False alarms'].toFixed(2)}%`).join('; ')}`}
               >
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={comparison} margin={{ top: 10, right: 0, left: -25, bottom: 0 }}>
-                    <CartesianGrid vertical={false} stroke="var(--border)" strokeDasharray="3 3" />
+                  <BarChart data={comparison} margin={{ top: 15, right: 5, left: -20, bottom: 0 }}>
+                    <CartesianGrid vertical={false} stroke="var(--border)" strokeDasharray="3 4" />
                     <XAxis
                       dataKey="name"
+                      tick={{ fontSize: 13 }}
+                      axisLine={false}
+                      tickLine={false}
+                    />
+                    <YAxis
+                      domain={[0, 100]}
+                      tickFormatter={(v) => `${v}%`}
                       tick={{ fontSize: 11 }}
                       axisLine={false}
                       tickLine={false}
                     />
-                    <YAxis
-                      domain={[0, 100]}
-                      tickFormatter={(v) => `${v}%`}
-                      tick={{ fontSize: 10 }}
-                      axisLine={false}
-                      tickLine={false}
-                    />
                     <Tooltip
                       contentStyle={tooltipStyle}
-                      formatter={(value) => `${Number(value).toFixed(2)}%`}
+                      formatter={(v) => `${Number(v).toFixed(2)}%`}
                     />
-                    <Legend wrapperStyle={{ fontSize: 10, paddingTop: 15 }} />
-                    <Bar dataKey="Accuracy" fill="#5b85ec" radius={[4, 4, 0, 0]} maxBarSize={32} />
+                    <Legend wrapperStyle={{ fontSize: 12, paddingTop: 12 }} />
+                    <Bar dataKey="Accuracy" fill="#2d7360" radius={[4, 4, 0, 0]} maxBarSize={32} />
                     <Bar
-                      dataKey="Attack recall"
-                      fill="#32a898"
+                      dataKey="Attacks caught"
+                      fill="#8ab6a7"
                       radius={[4, 4, 0, 0]}
                       maxBarSize={32}
                     />
                     <Bar
-                      dataKey="False positive rate"
-                      fill="#d8a15b"
+                      dataKey="False alarms"
+                      fill="#d3a16a"
                       radius={[4, 4, 0, 0]}
                       maxBarSize={32}
                     />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
-              <p className="chart-description">
-                Taller is better for accuracy and recall. A <b>shorter</b> false-positive bar is
-                better. Random Forest performed slightly better on the final test; XGBoost had been
-                selected earlier using validation.
-              </p>
+              <p className="chart-caption">Higher accuracy and recall. Lower false alarms.</p>
             </section>
             <section className="panel">
-              <h2>What a mistake looks like</h2>
-              <p className="chart-description">
-                {label} · four possible outcomes on the selected test view.
-              </p>
+              <div className="section-title">
+                <h2>Every outcome</h2>
+                <span className="muted-label">{label}</span>
+              </div>
               {chosen && (
                 <div className="confusion-grid">
-                  <div className="confusion-cell">
-                    <strong>{formatNumber(chosen.tn)}</strong>
-                    <span>Normal correctly accepted</span>
-                    <small>Actual Normal → predicted Normal</small>
-                  </div>
-                  <div className="confusion-cell mistake">
-                    <strong>{formatNumber(chosen.fp)}</strong>
-                    <span>Normal wrongly flagged</span>
-                    <small>False positive · a false alarm</small>
-                  </div>
-                  <div className="confusion-cell mistake">
-                    <strong>{formatNumber(chosen.fn)}</strong>
-                    <span>Attacks missed</span>
-                    <small>False negative · an attack let through</small>
-                  </div>
-                  <div className="confusion-cell">
-                    <strong>{formatNumber(chosen.tp)}</strong>
-                    <span>Attacks correctly caught</span>
-                    <small>Actual Attack → predicted Attack</small>
-                  </div>
+                  {[
+                    [chosen.tn, 'Normal accepted', false],
+                    [chosen.fp, 'False alarms', true],
+                    [chosen.fn, 'Attacks missed', true],
+                    [chosen.tp, 'Attacks caught', false],
+                  ].map(([n, text, mistake]) => (
+                    <div
+                      className={`confusion-cell ${mistake ? 'mistake' : ''}`}
+                      key={String(text)}
+                    >
+                      <strong>{formatNumber(Number(n))}</strong>
+                      <span>{text}</span>
+                    </div>
+                  ))}
                 </div>
               )}
-              <p className="chart-description">
-                These counts reconcile to all {formatNumber(chosen?.records || 0)} records in this
-                view. Accuracy alone hides the difference between a missed attack and a false alarm.
-              </p>
-            </section>
-            <section className="panel">
-              <h2>Why check repeated patterns?</h2>
-              <p className="chart-description">
-                Some test inputs exactly match measurements seen in training.
-              </p>
-              <div
-                className="chart-frame"
-                role="img"
-                aria-label="XGBoost accuracy: 87.12% on complete test; 86.35% without exact training matches; 82.59% on unique unseen feature-plus-answer records"
-              >
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart
-                    data={[
-                      {
-                        name: 'Complete test',
-                        accuracy:
-                          (data.metrics.find(
-                            (m) => m.model === 'xgb_depth7' && m.subset === 'official_test',
-                          )?.accuracy || 0) * 100,
-                      },
-                      {
-                        name: 'No exact match',
-                        accuracy:
-                          (data.metrics.find(
-                            (m) => m.model === 'xgb_depth7' && m.subset === 'unseen_features',
-                          )?.accuracy || 0) * 100,
-                      },
-                      {
-                        name: 'Unique unseen',
-                        accuracy:
-                          (data.metrics.find(
-                            (m) =>
-                              m.model === 'xgb_depth7' &&
-                              m.subset === 'unique_unseen_feature_target',
-                          )?.accuracy || 0) * 100,
-                      },
-                    ]}
-                    margin={{ top: 10, right: 0, left: -25, bottom: 0 }}
-                  >
-                    <CartesianGrid vertical={false} stroke="var(--border)" strokeDasharray="3 3" />
-                    <XAxis
-                      dataKey="name"
-                      axisLine={false}
-                      tickLine={false}
-                      tick={{ fontSize: 10 }}
-                    />
-                    <YAxis
-                      domain={[0, 100]}
-                      tickFormatter={(v) => `${v}%`}
-                      tick={{ fontSize: 10 }}
-                      axisLine={false}
-                      tickLine={false}
-                    />
-                    <Tooltip
-                      contentStyle={tooltipStyle}
-                      formatter={(value) => `${Number(value).toFixed(2)}%`}
-                    />
-                    <Bar
-                      dataKey="accuracy"
-                      name="XGBoost accuracy"
-                      fill="#5b85ec"
-                      radius={[5, 5, 0, 0]}
-                      maxBarSize={48}
-                    />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-              <p className="chart-description">
-                <b>8,541</b> test records have an exact training-feature match. Removing them leaves{' '}
-                <b>73,791</b> records. The unique unseen view also counts each feature-plus-answer
-                pair once, changing the weighting. These views reveal dataset limitations; they do
-                not prove live-network performance.
-              </p>
-            </section>
-            <section className="panel">
-              <h2>Which measurements mattered?</h2>
-              <p className="chart-description">
-                Top training-derived feature importances for {label}.
-              </p>
-              <div className="chart-frame" role="img" aria-label={`Top features for ${label}`}>
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart
-                    layout="vertical"
-                    data={data.importance[label]?.slice(0, 7) || []}
-                    margin={{ top: 0, right: 15, left: 0, bottom: 0 }}
-                  >
-                    <CartesianGrid
-                      horizontal={false}
-                      stroke="var(--border)"
-                      strokeDasharray="3 3"
-                    />
-                    <XAxis type="number" tick={{ fontSize: 9 }} axisLine={false} tickLine={false} />
-                    <YAxis
-                      type="category"
-                      dataKey="feature"
-                      width={90}
-                      tick={{ fontSize: 10 }}
-                      axisLine={false}
-                      tickLine={false}
-                    />
-                    <Tooltip
-                      contentStyle={tooltipStyle}
-                      formatter={(value) => Number(value).toFixed(4)}
-                    />
-                    <Bar
-                      dataKey="importance"
-                      name="Training importance"
-                      fill="#32a898"
-                      radius={[0, 4, 4, 0]}
-                      barSize={15}
-                    />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-              <p className="chart-description">
-                Importance summarizes how the fitted model used features. It is <b>not a cause</b>,
-                and it does not explain one individual prediction. Importances from different
-                algorithms are not directly interchangeable.
+              <p className="chart-caption">
+                {formatNumber(chosen?.records || 0)} records in this view.
               </p>
             </section>
           </div>
-          <section className="panel">
-            <div className="panel-header">
-              <div>
-                <h2>How we kept the experiment honest</h2>
-                <p>Choices made before opening the final test answers.</p>
-              </div>
-              <CheckCircle2 size={22} style={{ color: 'var(--teal)' }} />
-            </div>
-            <div className="glossary">
-              <div>
-                <b>Keep the answers out of the inputs</b>
-                <p>
-                  ID, label and attack_cat never enter a detector. Both models receive the same 42
-                  measurements.
-                </p>
-              </div>
-              <div>
-                <b>Use validation for choosing settings</b>
-                <p>
-                  140,273 fitting rows and 35,068 validation rows. Identical feature groups stay
-                  together. Preparation is learned inside the fitting split.
-                </p>
-              </div>
-              <div>
-                <b>Freeze, refit, then test</b>
-                <p>
-                  Freeze model settings and cutoffs using validation, refit on all training rows,
-                  and evaluate the separate test partition.
-                </p>
-              </div>
-              <div>
-                <b>Check the website against Python</b>
-                <p>
-                  The browser inference produced zero decision mismatches against both original
-                  models over all 82,332 test records.{' '}
-                  <a
-                    href="/data/model-parity.json"
-                    target="_blank"
-                    className="underline text-primary"
+          <details className="advanced-analysis">
+            <summary>
+              Go deeper <span>Feature importance, repeated patterns & method</span>
+            </summary>
+            <div className="advanced-content">
+              <div className="chart-grid">
+                <section className="panel">
+                  <h2>Which measurements mattered?</h2>
+                  <div
+                    className="chart-frame"
+                    role="img"
+                    aria-label={`Top training features for ${label}`}
                   >
-                    Read the parity check
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart
+                        layout="vertical"
+                        data={data.importance[label]?.slice(0, 7) || []}
+                        margin={{ top: 0, right: 15, left: 0, bottom: 0 }}
+                      >
+                        <CartesianGrid
+                          horizontal={false}
+                          stroke="var(--border)"
+                          strokeDasharray="3 4"
+                        />
+                        <XAxis
+                          type="number"
+                          tick={{ fontSize: 11 }}
+                          axisLine={false}
+                          tickLine={false}
+                        />
+                        <YAxis
+                          type="category"
+                          dataKey="feature"
+                          width={105}
+                          tick={{ fontSize: 11 }}
+                          axisLine={false}
+                          tickLine={false}
+                        />
+                        <Tooltip
+                          contentStyle={tooltipStyle}
+                          formatter={(v) => Number(v).toFixed(4)}
+                        />
+                        <Bar
+                          dataKey="importance"
+                          name="Training importance"
+                          fill="#2d7360"
+                          radius={[0, 4, 4, 0]}
+                          barSize={15}
+                        />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
+                  <p className="chart-caption">
+                    Training-derived importance. Not a cause or an explanation of one prediction.
+                  </p>
+                </section>
+                <section className="method-notes">
+                  <h3>Repeated patterns</h3>
+                  <p>
+                    8,541 test records exactly match training measurements. The no-exact-match view
+                    removes them. The unique unseen view also counts each feature-plus-answer pair
+                    once.
+                  </p>
+                  <h3>How settings were chosen</h3>
+                  <p>
+                    Grouped validation, then frozen settings and score cutoffs. XGBoost was chosen
+                    on validation; Random Forest did slightly better on the final test.
+                  </p>
+                  <h3>Browser verification</h3>
+                  <p>
+                    Zero decision mismatches against Python across all 82,332 test records. This
+                    does not establish live-network protection.
+                  </p>
+                  <a href="/data/model-parity.json" target="_blank" className="text-link">
+                    Verification record <ArrowUpRight size={13} />
                   </a>
-                  .
-                </p>
+                </section>
               </div>
             </div>
-            <Link href="/project/" className="subtle-link mt-5">
-              Follow the complete workflow <ArrowRight size={12} />
-            </Link>
-          </section>
+          </details>
+          <div className="analysis-bottom">
+            <span>Recorded UNSW-NB15 flows. Live-network performance is untested.</span>
+            <a
+              href={`${repository}/blob/main/docs/REPORT.md`}
+              target="_blank"
+              rel="noreferrer"
+              className="text-link"
+            >
+              Full report <ArrowUpRight size={13} />
+            </a>
+          </div>
         </>
       )}
     </div>

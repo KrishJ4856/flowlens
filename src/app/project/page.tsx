@@ -2,309 +2,126 @@ import Link from 'next/link';
 import {
   ArrowRight,
   ArrowUpRight,
-  BookOpen,
-  Braces,
-  ClipboardCheck,
   Database,
+  Braces,
+  Layers,
   FileChartColumn,
   FolderCode,
-  CodeXml as Github,
-  Layers,
-  Network,
-  Package,
-  ShieldCheck,
 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { PageHeading, Note, Step } from '@/components/common';
+import { PageHeading } from '@/components/common';
 import { repository } from '@/lib/features';
 const files = [
-  {
-    icon: Database,
-    name: 'The examples and their answers',
-    path: 'ml/data/raw/',
-    text: 'train.csv contains 175,341 teaching examples; test.csv contains 82,332 final-exam examples. The source manifest records their provenance.',
-  },
-  {
-    icon: Braces,
-    name: 'The learning and prediction code',
-    path: 'ml/scripts/',
-    text: 'train.py calls the library learning algorithms. evaluate.py scores frozen predictions. predict.py loads a saved model and asks it about a CSV.',
-  },
-  {
-    icon: Layers,
-    name: 'The trained models',
-    path: 'ml/models/',
-    text: 'xgb_depth7.joblib and rf_depth24.joblib store what was learned, together with fitted preprocessing and each model’s decision cutoff.',
-  },
-  {
-    icon: ClipboardCheck,
-    name: 'The measured results',
-    path: 'ml/results/',
-    text: 'The test metrics, per-record predictions, selection lock and data audits record what actually happened in the experiment.',
-  },
-  {
-    icon: FolderCode,
-    name: 'The website itself',
-    path: 'src/',
-    text: 'Next.js pages, shadcn/ui components, Tailwind styles and the approachable interface. public/model-worker.js runs the exported trees off the main screen thread.',
-  },
-  {
-    icon: FileChartColumn,
-    name: 'The presentation material',
-    path: 'docs/',
-    text: 'The report, methods, model card, poster draft and presentation notes explain the results and what we can responsibly claim.',
-  },
+  ['Data', 'ml/data/raw/', 'Training and testing CSVs.', Database],
+  ['Models', 'ml/models/', 'The two saved detectors.', Layers],
+  ['ML code', 'ml/scripts/', 'Train, test and predict.', Braces],
+  ['Results', 'ml/results/', 'Scores and individual predictions.', FileChartColumn],
+  ['Website', 'src/', 'Pages, components and styles.', FolderCode],
+  ['Presentation', 'docs/', 'Report, charts and speaking notes.', FileChartColumn],
+] as const;
+const questions = [
+  [
+    'What is a network flow?',
+    'A record summarizing a communication between computers. It describes things like duration, packet counts and bytes transferred—not the text of messages.',
+  ],
+  [
+    'What are features and labels?',
+    'A feature is one measurement. Each flow has 42. A label is the known answer: Normal (0) or Attack (1). The answer columns and record ID never enter the model as inputs.',
+  ],
+  [
+    'How do the two models differ?',
+    'Random Forest averages predictions from 200 randomized trees. XGBoost combines 700 trees built progressively. They learn different patterns, so they can disagree.',
+  ],
+  [
+    'What happens when I press Run?',
+    'The browser applies the saved preprocessing, traverses the original fitted trees and compares each attack score with its saved cutoff: 0.50 for XGBoost, 0.55 for Random Forest. It does not retrain. Scores are not calibrated real-world risk percentages.',
+  ],
+  [
+    'How was the experiment checked?',
+    'Settings were selected using grouped validation inside training, then frozen before final testing. The browser produced the same Normal/Attack decisions as Python on all 82,332 test records. The repository includes the code and verification results.',
+  ],
+  [
+    'What are the limitations?',
+    'On the complete test, both models catch about 98% of attacks but wrongly flag around one in four normal flows. Some test patterns repeat training measurements; separate no-exact-match results are reported. Performance on a live network or new attack types has not been established.',
+  ],
 ];
 export default function Project() {
   return (
     <div className="container page-content">
       <PageHeading
-        eyebrow="START HERE · NO ML EXPERIENCE NEEDED"
-        title="The project, from the ground up"
-        description="What this lab does, how the models were taught, and where every important piece lives."
+        title="How it works."
+        description="A model learns from examples. Then we check what it learned."
       />
-      <div className="project-layout">
+      <div className="about-flow">
         <div>
-          <section className="panel prose-panel">
-            <div className="flex gap-3 items-center mb-3">
-              <span className="icon-box">
-                <Network size={22} />
-              </span>
-              <h2>First, what is network traffic?</h2>
-            </div>
-            <p>
-              Whenever computers communicate, they send small pieces of data called <b>packets</b>.
-              A <b>flow</b> summarizes a communication between two endpoints. Instead of reading
-              message contents, our project looks at measurements: how long the flow lasted, how
-              many packets moved, how many bytes were sent, and other recorded details.
-            </p>
-            <p>
-              Some benchmark flows are labelled <b>Normal</b>. Others are labelled <b>Attack</b>.
-              Our question is: can a model learn useful patterns from those labelled examples, then
-              classify another recorded flow?
-            </p>
-            <Note>
-              This is an offline network intrusion detection project using the{' '}
+          <span>01 / LEARN</span>
+          <h2>Show examples.</h2>
+          <p>175,341 flows, each with a known answer.</p>
+        </div>
+        <ArrowRight className="flow-arrow" size={20} />
+        <div>
+          <span>02 / CHECK</span>
+          <h2>Take the test.</h2>
+          <p>82,332 separate records. Count the mistakes.</p>
+        </div>
+        <ArrowRight className="flow-arrow" size={20} />
+        <div>
+          <span>03 / EXPLORE</span>
+          <h2>Try a connection.</h2>
+          <p>Change measurements. Compare both models.</p>
+        </div>
+      </div>
+      <div className="about-columns">
+        <section>
+          <h2 className="section-heading">The basics</h2>
+          <div className="question-list">
+            {questions.map(([title, text]) => (
+              <details key={title}>
+                <summary>{title}</summary>
+                <p>{text}</p>
+              </details>
+            ))}
+          </div>
+        </section>
+        <section>
+          <div className="section-title">
+            <h2 className="section-heading">Inside the project</h2>
+            <a href={repository} target="_blank" rel="noreferrer" className="text-link">
+              GitHub <ArrowUpRight size={14} />
+            </a>
+          </div>
+          <div className="asset-list">
+            {files.map(([label, path, description, Icon]) => (
               <a
-                href="https://research.unsw.edu.au/projects/unsw-nb15-dataset"
-                target="_blank"
-                rel="noreferrer"
-                className="underline"
-              >
-                UNSW-NB15 benchmark
-              </a>
-              . It is not a road-traffic predictor or a live Wi-Fi security service.
-            </Note>
-          </section>
-          <section className="panel prose-panel">
-            <h2>Six words that make everything easier</h2>
-            <div className="glossary">
-              <div>
-                <b>Feature</b>
-                <p>
-                  One input measurement. Duration and packet count are two features. Our records
-                  have 42 of them.
-                </p>
-              </div>
-              <div>
-                <b>Label</b>
-                <p>
-                  The known answer: 0 for Normal, 1 for Attack. It teaches or checks the model; it
-                  never enters a prediction.
-                </p>
-              </div>
-              <div>
-                <b>Algorithm</b>
-                <p>
-                  A learning method supplied by a library. We used two established methods: XGBoost
-                  and Random Forest.
-                </p>
-              </div>
-              <div>
-                <b>Trained model</b>
-                <p>
-                  The patterns learned after an algorithm sees training examples and their answers.
-                  This is what we save and reuse.
-                </p>
-              </div>
-              <div>
-                <b>Validation</b>
-                <p>
-                  A practice exam inside training. It helps us choose settings and cutoffs without
-                  consulting the final test.
-                </p>
-              </div>
-              <div>
-                <b>Inference</b>
-                <p>
-                  Using a trained model to predict an answer. This is what happens when you press
-                  Run in the playground.
-                </p>
-              </div>
-            </div>
-          </section>
-          <section className="panel prose-panel">
-            <h2>How we taught and tested the models</h2>
-            <div className="grid gap-5 mt-6">
-              <Step n="01" title="Separate measurements from answers">
-                Each raw row has 45 columns: 42 measurements, a local ID, and two answers. We
-                exclude ID, label and attack_cat from the inputs.
-              </Step>
-              <Step n="02" title="Prepare the data consistently">
-                Learn missing-value rules from training. Turn categories like TCP into numeric
-                indicator columns. The final 42 measurements become 194 numeric inputs.
-              </Step>
-              <Step n="03" title="Train and choose with validation">
-                Call fit(X, y): X is the measurement table and y is the answer column. Compare
-                candidate settings on grouped validation records. Keep identical inputs on the same
-                side of the split.
-              </Step>
-              <Step n="04" title="Freeze choices and take the final exam">
-                Refit the selected configurations on the full training file. Predict the separate
-                test inputs, then compare with the known answers. Report errors as well as
-                successes.
-              </Step>
-              <Step n="05" title="Save and demonstrate">
-                Load the fitted trees and preparation rules. Call predict_proba on new compatible
-                measurements, then apply the saved cutoff. No new learning occurs in the playground.
-              </Step>
-            </div>
-            <details className="explainer">
-              <summary>Where did the “base model” come from?</summary>
-              <p>
-                The Python libraries supply the learning algorithms. We create a new XGBClassifier
-                or RandomForestClassifier and train it with our examples. We did not download a
-                pretrained network detector, and we do not claim to have invented either algorithm.
-              </p>
-            </details>
-          </section>
-          <section className="panel prose-panel">
-            <h2>Why compare two algorithms?</h2>
-            <div className="glossary">
-              <div>
-                <b>XGBoost · builds progressively</b>
-                <p>
-                  It adds trees in stages, improving the combined prediction using the training
-                  objective. Our saved binary model has 700 trees and uses a 0.50 score cutoff.
-                </p>
-              </div>
-              <div>
-                <b>Random Forest · combines diverse trees</b>
-                <p>
-                  It trains randomized trees using sampled examples and feature choices, then
-                  averages their class scores. Our saved model has 200 trees and uses a 0.55 cutoff.
-                </p>
-              </div>
-            </div>
-            <p>
-              They can disagree because they learned different combinations of measurements. A
-              larger attack score is not proof of an attack, and a confident prediction can still be
-              wrong.
-            </p>
-            <Link href="/playground/" className="text-link text-primary">
-              Try the same record in both models <ArrowRight size={14} />
-            </Link>
-          </section>
-          <section className="panel prose-panel">
-            <h2>Find the important project files</h2>
-            <p>
-              The public repository separates the website, the machine learning experiment and the
-              documentation. The browser exports contain the actual fitted tree values; they are not
-              replacement models.
-            </p>
-            {files.map((file) => (
-              <a
-                key={file.path}
-                href={`${repository}/tree/main/${file.path}`}
-                className="file-card"
+                href={`${repository}/tree/main/${path}`}
+                key={path}
                 target="_blank"
                 rel="noreferrer"
               >
-                <file.icon size={19} />
+                <Icon size={19} strokeWidth={1.5} />
                 <div>
-                  <b>{file.name}</b>
-                  <p>{file.text}</p>
-                  <code>
-                    {file.path} <ArrowUpRight className="inline" size={10} />
-                  </code>
+                  <b>{label}</b>
+                  <p>{description}</p>
                 </div>
+                <ArrowUpRight size={15} />
               </a>
             ))}
-          </section>
-          <section className="panel prose-panel">
-            <h2>What the results do—and don’t—tell us</h2>
-            <p>
-              The main models catch about 98% of attacks in the complete test. However, they wrongly
-              flag around one in four normal test records. Some measurement patterns repeat across
-              the original training and test files, so we also report a view with no exact training
-              match.
-            </p>
-            <p>
-              This supports a working, demonstrable college project. It does not establish
-              protection against new attacks or reliable operation on the college network. An
-              interface is now available; compatible live flow extraction and new-network validation
-              remain future work.
-            </p>
-            <Link href="/analysis/" className="text-link text-primary">
-              Read the results with their limitations <ArrowRight size={14} />
-            </Link>
-          </section>
-        </div>
-        <aside className="project-aside">
-          <section className="panel">
-            <BookOpen size={21} className="text-primary mb-3" />
-            <h2>A good way to explore</h2>
-            <p>
-              Start with an unedited sample. Look at its measurements, run both models, then reveal
-              the known answer. Next, change one value and see what happens.
-            </p>
-            <Button asChild className="w-full">
-              <Link href="/playground/">
-                Open the playground <ArrowRight size={14} />
-              </Link>
-            </Button>
-          </section>
-          <section className="panel">
-            <Github size={21} className="text-primary mb-3" />
-            <h2>Open and reproducible</h2>
-            <p>
-              The data, fitted models, experiment code and website source are organized together.
-              Follow the repository README to run the site locally.
-            </p>
-            <a href={repository} target="_blank" rel="noreferrer" className="text-link">
-              View the GitHub repository <ArrowUpRight size={13} />
-            </a>
-            <a
-              href={`${repository}/blob/main/docs/REPORT.md`}
-              target="_blank"
-              rel="noreferrer"
-              className="file-link mt-4"
-            >
-              Read the complete report
-            </a>
-            <a
-              href={`${repository}/blob/main/docs/PRESENTATION_NOTES.md`}
-              target="_blank"
-              rel="noreferrer"
-              className="file-link"
-            >
-              Presentation notes
-            </a>
-            <a
-              href={`${repository}/blob/main/docs/POSTER_CONTENT.md`}
-              target="_blank"
-              rel="noreferrer"
-              className="file-link"
-            >
-              Poster draft
-            </a>
-          </section>
-          <Note>
-            Your input stays in the browser. No login, database or network monitoring is needed to
-            try a prediction.
-          </Note>
-        </aside>
+          </div>
+          <a
+            href="https://research.unsw.edu.au/projects/unsw-nb15-dataset"
+            target="_blank"
+            rel="noreferrer"
+            className="source-credit"
+          >
+            Dataset: UNSW-NB15 <ArrowUpRight size={12} />
+          </a>
+        </section>
       </div>
+      <Link className="bottom-cta" href="/playground/">
+        Ready to try a record?{' '}
+        <span>
+          Open playground <ArrowRight size={16} />
+        </span>
+      </Link>
     </div>
   );
 }

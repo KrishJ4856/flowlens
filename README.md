@@ -29,7 +29,7 @@ Next.js exports the complete site to `out/`. Deploy to Vercel by importing this 
 - **Playground:** load a real record, edit any of 42 measurements, compare both model outputs, reveal a sample's known answer, and import/export one CSV record.
 - **Training / testing data:** browse the complete partitions with pagination, whole-partition label/category filters, ID lookup and all-field record inspection. Send any record to the playground.
 - **Analysis:** compare measured performance, inspect mistakes, examine train/test overlap and training-derived feature importance.
-- **The project:** learn the terminology, training workflow and file structure.
+- **About:** learn the terminology, training workflow and file structure.
 - Light/dark themes, responsive layouts, keyboard-accessible controls and reduced-motion support.
 
 ## Start with these files
@@ -108,3 +108,5 @@ The dataset is **UNSW-NB15**, not a road-traffic dataset. Use the canonical file
 - [shadcn/ui](https://ui.shadcn.com/), Tailwind CSS, Recharts and Lucide icons
 
 The public benchmark and third-party libraries retain their respective attribution and usage requirements. No private chats, credentials, browsing history or environment files are included in this project.
+
+Interface typography: Bricolage Grotesque, self-hosted at weights 400 and 700. Its SIL Open Font License is included in `src/app/fonts/OFL.txt`.

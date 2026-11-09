@@ -1,5 +1,4 @@
-import { ArrowUpRight, Info } from 'lucide-react';
-import Link from 'next/link';
+import { Info } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 export function PageHeading({
   eyebrow,
@@ -7,17 +6,17 @@ export function PageHeading({
   description,
   children,
 }: {
-  eyebrow: string;
+  eyebrow?: string;
   title: string;
-  description: string;
+  description?: string;
   children?: React.ReactNode;
 }) {
   return (
     <div className="page-heading">
       <div>
-        <div className="eyebrow">{eyebrow}</div>
+        {eyebrow && <div className="eyebrow">{eyebrow}</div>}
         <h1>{title}</h1>
-        <p>{description}</p>
+        {description && <p>{description}</p>}
       </div>
       {children}
     </div>
@@ -38,50 +37,8 @@ export function Explain({ children }: { children: React.ReactNode }) {
 export function Note({ children }: { children: React.ReactNode }) {
   return (
     <div className="note">
-      <Info size={17} />
+      <Info size={16} />
       <div>{children}</div>
-    </div>
-  );
-}
-export function Step({
-  n,
-  title,
-  children,
-}: {
-  n: string;
-  title: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="learning-step">
-      <span>{n}</span>
-      <div>
-        <h3>{title}</h3>
-        <p>{children}</p>
-      </div>
-    </div>
-  );
-}
-export function SectionTitle({
-  label,
-  title,
-  href,
-}: {
-  label?: string;
-  title: string;
-  href?: string;
-}) {
-  return (
-    <div className="section-title">
-      <div>
-        {label && <div className="eyebrow">{label}</div>}
-        <h2>{title}</h2>
-      </div>
-      {href && (
-        <Link href={href}>
-          Take a closer look <ArrowUpRight size={15} />
-        </Link>
-      )}
     </div>
   );
 }

@@ -159,5 +159,5 @@ export async function readGzip(url: string) {
   return new Response(response.body.pipeThrough(new DecompressionStream('gzip'))).json();
 }
 export function formatNumber(n: number) {
-  return new Intl.NumberFormat('en-IN').format(n);
+  return new Intl.NumberFormat('en-US').format(n);
 }

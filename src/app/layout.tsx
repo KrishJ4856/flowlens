@@ -1,4 +1,13 @@
 import type { Metadata } from 'next';
+import localFont from 'next/font/local';
+const bricolage = localFont({
+  src: [
+    { path: './fonts/bricolage-400.ttf', weight: '400', style: 'normal' },
+    { path: './fonts/bricolage-700.ttf', weight: '700', style: 'normal' },
+  ],
+  variable: '--font-bricolage',
+  display: 'swap',
+});
 import './globals.css';
 import { Shell } from '@/components/shell';
 export const metadata: Metadata = {
@@ -9,7 +18,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>
+      <body className={bricolage.variable}>
         <Shell>{children}</Shell>
       </body>
     </html>

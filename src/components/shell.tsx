@@ -8,12 +8,12 @@ import { Button } from '@/components/ui/button';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { repository } from '@/lib/features';
 const navigation = [
-  ['Overview', '/'],
+  ['Home', '/'],
   ['Playground', '/playground/'],
-  ['Training data', '/training/'],
-  ['Testing data', '/testing/'],
+  ['Training', '/training/'],
+  ['Testing', '/testing/'],
   ['Analysis', '/analysis/'],
-  ['The project', '/project/'],
+  ['About', '/project/'],
 ];
 function Navigation({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -29,9 +29,7 @@ function Navigation({ children }: { children: React.ReactNode }) {
             <span className="brand-mark">
               <Activity size={22} />
             </span>
-            <span>
-              FlowLens<span className="brand-sub">NETWORK TRAFFIC LAB</span>
-            </span>
+            <span>FlowLens</span>
           </Link>
           <nav className="desktop-nav" aria-label="Main navigation">
             {navigation.map(([label, path]) => (
@@ -89,16 +87,11 @@ function Navigation({ children }: { children: React.ReactNode }) {
       </header>
       <main id="main-content">{children}</main>
       <footer className="site-footer">
+        <span>UNSW-NB15 · Network traffic dataset</span>
         <div>
-          <span className="footer-brand">
-            <Activity size={16} /> FlowLens
-          </span>
-          <span>A minor project. A clearer view of machine learning.</span>
-        </div>
-        <div>
-          <span className="status-dot" /> Recorded data · Real models
+          <Link href="/project/">About the project</Link>
           <a href={repository} target="_blank" rel="noreferrer">
-            Explore the source <ArrowUpRight size={13} />
+            GitHub <ArrowUpRight size={13} />
           </a>
         </div>
       </footer>

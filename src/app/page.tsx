@@ -1,190 +1,90 @@
 import Link from 'next/link';
 import {
-  ArrowRight,
   ArrowUpRight,
   FlaskConical,
   Database,
   ClipboardCheck,
   ChartNoAxesCombined,
-  Braces,
-  BookOpen,
-  Network,
-  ShieldCheck,
-  ChevronRight,
+  ArrowRight,
 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Step, SectionTitle } from '@/components/common';
 const cards = [
   {
     title: 'Playground',
-    tag: 'TRY THE MODELS',
-    description:
-      'Give both models the same network measurements. Change a value and see what happens.',
+    text: 'Change a connection. Compare two predictions.',
     href: '/playground/',
     icon: FlaskConical,
-    color: 'blue',
-    foot: 'Compare XGBoost & Random Forest',
+    meta: 'XGBoost + Random Forest',
+    number: '01',
   },
   {
     title: 'Training data',
-    tag: 'THE TEACHING EXAMPLES',
-    description:
-      'Explore the labelled examples the models learned from. Every row describes one communication.',
+    text: 'The examples the models learned from.',
     href: '/training/',
     icon: Database,
-    color: 'teal',
-    foot: '175,341 recorded flows',
+    meta: '175,341 records',
+    number: '02',
   },
   {
     title: 'Testing data',
-    tag: 'THE FINAL EXAM',
-    description:
-      'Browse the separate records used to check the models after their settings were frozen.',
+    text: 'The records used to check their answers.',
     href: '/testing/',
     icon: ClipboardCheck,
-    color: 'violet',
-    foot: '82,332 test records',
+    meta: '82,332 records',
+    number: '03',
   },
   {
     title: 'Analysis',
-    tag: 'THE RESULTS, EXPLAINED',
-    description:
-      'See what the models got right, where they made mistakes, and why accuracy is only part of the story.',
+    text: 'What they caught. What they missed.',
     href: '/analysis/',
     icon: ChartNoAxesCombined,
-    color: 'amber',
-    foot: 'Real results · Clear explanations',
+    meta: 'Results & comparisons',
+    number: '04',
   },
 ];
 export default function Home() {
   return (
-    <div className="container">
-      <section className="hero">
-        <div className="hero-copy">
-          <div className="eyebrow">
-            <span className="tiny-dot" /> AN INTERACTIVE MACHINE LEARNING PROJECT
-          </div>
-          <h1>
-            What can network
-            <br />
-            traffic tell us?
-          </h1>
+    <div className="container home-page">
+      <section className="home-intro">
+        <span className="eyebrow">A NETWORK TRAFFIC LAB</span>
+        <h1>
+          Normal traffic.
+          <br />
+          <span>Or an attack?</span>
+        </h1>
+        <div className="intro-side">
           <p>
-            Some connections are ordinary. Others carry signs of an attack. Explore how two trained
-            models learn to tell them apart—one measurement at a time.
-          </p>
-          <div className="hero-buttons">
-            <Button asChild size="lg">
-              <Link href="/playground/">
-                Open the playground <ArrowRight size={17} />
-              </Link>
-            </Button>
-            <Link className="text-link" href="/project/">
-              New to this? Start here <ChevronRight size={15} />
-            </Link>
-          </div>
-          <div className="hero-caption">
-            <ShieldCheck size={15} /> Actual trained models. No machine learning experience needed.
-          </div>
-        </div>
-        <div
-          className="network-visual"
-          aria-label="Diagram: network measurements go into XGBoost and Random Forest, producing a normal or attack prediction"
-        >
-          <div className="visual-top">
-            <span className="visual-kicker">A CLOSER LOOK AT ONE CONNECTION</span>
-            <span className="live-label">
-              <span className="status-dot" /> MODEL WORKFLOW
-            </span>
-          </div>
-          <div className="flow-input">
-            <div className="icon-box">
-              <Network size={25} />
-            </div>
-            <div>
-              <b>One network flow</b>
-              <span>42 measurements about a communication</span>
-            </div>
-          </div>
-          <div className="flow-wire" />
-          <div className="model-pair">
-            <div>
-              <span className="model-orb blue">X</span>
-              <b>XGBoost</b>
-              <span>Learns progressively</span>
-            </div>
-            <div>
-              <span className="model-orb teal">RF</span>
-              <b>Random Forest</b>
-              <span>Combines many trees</span>
-            </div>
-          </div>
-          <div className="flow-wire" />
-          <div className="flow-output">
-            <ShieldCheck size={19} />
-            <b>Normal or Attack?</b>
-            <span>A prediction to investigate</span>
-          </div>
-          <div className="visual-bottom">
-            Measurements in <ArrowRight size={13} /> Learned patterns <ArrowRight size={13} /> Two
-            predictions
-          </div>
-        </div>
-      </section>
-      <section className="explore-section">
-        <SectionTitle label="MAKE YOURSELF AT HOME" title="Choose where to explore" />
-        <div className="explore-grid">
-          {cards.map((card) => (
-            <Link className={`explore-card ${card.color}`} href={card.href} key={card.title}>
-              <div className="card-top">
-                <span className="icon-box">
-                  <card.icon size={23} />
-                </span>
-                <ArrowUpRight size={20} className="card-arrow" />
-              </div>
-              <div className="card-eyebrow">{card.tag}</div>
-              <h2>{card.title}</h2>
-              <p>{card.description}</p>
-              <div className="card-foot">
-                {card.foot}
-                <ArrowRight size={14} />
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
-      <section className="learning-strip">
-        <div>
-          <span className="eyebrow">THE IDEA IN THREE STEPS</span>
-          <h2>
-            Examples become
+            Explore real connections.
             <br />
-            learned patterns.
-          </h2>
+            See what two trained models detect.
+          </p>
           <Link href="/project/" className="text-link">
-            Understand the complete project <ArrowRight size={15} />
+            How it works <ArrowRight size={15} />
           </Link>
         </div>
-        <Step n="01" title="Learn from examples">
-          Show an algorithm network measurements and the known answer: normal or attack.
-        </Step>
-        <Step n="02" title="Check on separate data">
-          Ask the trained model about test records, then compare its guesses with the answers.
-        </Step>
-        <Step n="03" title="Explore a prediction">
-          Load the saved model and try a complete record. No retraining is needed.
-        </Step>
       </section>
-      <div className="home-bottom">
-        <BookOpen size={19} />
-        <p>
-          <b>A lab for understanding, not live protection.</b> These models classify recorded
-          UNSW-NB15 flows. Their performance on your Wi-Fi or a new network has not been
-          established.
-        </p>
-        <Link href="/project/">
-          About the project <ArrowUpRight size={14} />
-        </Link>
+      <div className="home-grid">
+        {cards.map((card) => (
+          <Link href={card.href} key={card.title} className="home-card">
+            <div className="home-card-top">
+              <span className="card-icon">
+                <card.icon size={25} strokeWidth={1.5} />
+              </span>
+              <span className="card-number">{card.number}</span>
+            </div>
+            <div className="home-card-body">
+              <div>
+                <h2>{card.title}</h2>
+                <p>{card.text}</p>
+              </div>
+              <ArrowUpRight size={22} strokeWidth={1.5} />
+            </div>
+            <span className="card-meta">{card.meta}</span>
+          </Link>
+        ))}
+      </div>
+      <div className="home-caption">
+        <span className="status-dot" /> Real models. Recorded data.
+        <span className="caption-right">UNSW-NB15 · Offline classification</span>
       </div>
     </div>
   );
