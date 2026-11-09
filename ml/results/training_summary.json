@@ -1,0 +1,90 @@
+{
+  "elapsed_seconds": 1705.1041390350001,
+  "versions": {
+    "python": "3.11.16",
+    "numpy": "2.4.6",
+    "pandas": "3.1.1",
+    "scikit_learn": "1.9.1",
+    "xgboost": "3.2.0"
+  },
+  "models": [
+    {
+      "name": "dummy_majority",
+      "task": "binary",
+      "family": "dummy",
+      "path": "models/dummy_majority.joblib",
+      "champion": false,
+      "full_refit_seconds": 0.00534169399907114,
+      "threshold": 0.5,
+      "sha256": "594153e51baf0b4d65c41da6db0c27ca02015a8f68970c639e41c0e3aba92662",
+      "bytes": 3299
+    },
+    {
+      "name": "logistic_baseline",
+      "task": "binary",
+      "family": "logistic_regression",
+      "path": "models/logistic_baseline.joblib",
+      "champion": false,
+      "full_refit_seconds": 5.683405784999195,
+      "threshold": 0.65,
+      "sha256": "5d709122c271802b88e7de0738028cf82cd28044bd0b0f157a717fdc984b1279",
+      "bytes": 5559
+    },
+    {
+      "name": "rf_depth24",
+      "task": "binary",
+      "family": "random_forest",
+      "path": "models/rf_depth24.joblib",
+      "champion": false,
+      "full_refit_seconds": 73.60347127699788,
+      "threshold": 0.55,
+      "sha256": "960f2e54aa14753f8cec6e0484a18d7813230b1775efebb34522fd4c26c5d63a",
+      "bytes": 21644776
+    },
+    {
+      "name": "xgb_depth7",
+      "task": "binary",
+      "family": "xgboost",
+      "path": "models/xgb_depth7.joblib",
+      "champion": true,
+      "full_refit_seconds": 56.08860224499949,
+      "threshold": 0.5,
+      "sha256": "5f4dfba4fd7f227ef8a95d382c19afc4e597eb91c90ba9a60b2bdd6b7c8094e3",
+      "bytes": 990329
+    },
+    {
+      "name": "multiclass_dummy",
+      "task": "multiclass",
+      "family": "dummy",
+      "path": "models/multiclass_dummy.joblib",
+      "champion": false,
+      "full_refit_seconds": 0.01226539199706167,
+      "threshold": null,
+      "sha256": "78fe463f08089b4013ec17e883c450cf741562794d4f32417ed5fc76bc27aca8",
+      "bytes": 3295
+    },
+    {
+      "name": "multiclass_rf_balanced",
+      "task": "multiclass",
+      "family": "random_forest",
+      "path": "models/multiclass_rf_balanced.joblib",
+      "champion": false,
+      "full_refit_seconds": 68.04534148400126,
+      "threshold": null,
+      "sha256": "a5a7d99fc218ee5f364af5aab936975e88fc27bf860717c3ae79f64c9925f303",
+      "bytes": 90941876
+    },
+    {
+      "name": "multiclass_xgb_weighted",
+      "task": "multiclass",
+      "family": "xgboost",
+      "path": "models/multiclass_xgb_weighted.joblib",
+      "champion": true,
+      "full_refit_seconds": 374.3656144139968,
+      "threshold": null,
+      "sha256": "496795e3327f1b6edd0752d45d7b2ecf6b15f6817defcb981ea2f6f323a6c2ae",
+      "bytes": 2973029
+    }
+  ],
+  "candidate_count": 14
+}

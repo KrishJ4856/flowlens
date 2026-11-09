@@ -1,0 +1,16 @@
+{
+  "records": 82332,
+  "maxAbsoluteScoreError": {
+    "xgboost": 1.1920928955078125e-7,
+    "randomforest": 3.3306690738754696e-16
+  },
+  "predictionMismatches": {
+    "xgboost": 0,
+    "randomforest": 0
+  },
+  "tolerance": {
+    "xgboost": 0.000001,
+    "randomforest": 1e-12
+  },
+  "scope": "All frozen final test records. Browser inference uses exported fitted trees; no model was retrained."
+}

@@ -1,0 +1,27 @@
+{
+  "checks_passed": 22,
+  "checks": {
+    "interactive exit succeeds": true,
+    "both models displayed": true,
+    "sample answers remain separate": true,
+    "edited truth is not reused": true,
+    "edits saved correctly": true,
+    "saved inputs exclude answers": true,
+    "bad numeric and negative input rejected": true,
+    "answers cannot be edited into inputs": true,
+    "missing required column rejected": true,
+    "custom input has no assumed answer": true,
+    "out-of-range row rejected": true,
+    "batch filename with spaces succeeds": true,
+    "xgboost matches original predictor": true,
+    "randomforest matches original predictor": true,
+    "separate key checks both saved predictions": true,
+    "unchanged model dummy_majority": true,
+    "unchanged model logistic_baseline": true,
+    "unchanged model rf_depth24": true,
+    "unchanged model xgb_depth7": true,
+    "unchanged model multiclass_dummy": true,
+    "unchanged model multiclass_rf_balanced": true,
+    "unchanged model multiclass_xgb_weighted": true
+  }
+}

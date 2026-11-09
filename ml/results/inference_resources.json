@@ -1,0 +1,74 @@
+{
+  "measured_at_utc": "2026-11-09T07:09:55.818937+00:00",
+  "platform": "linux",
+  "threads": 2,
+  "method": "Fresh process per case; peak Linux RSS includes interpreter, imports, model and input. Median warm preparation + prediction; no disk output. Not a minimum RAM requirement or a real-network benchmark.",
+  "measurements": [
+    {
+      "model": "xgboost",
+      "records": 1,
+      "repeats": 20,
+      "model_load_seconds_excluding_imports": 0.10467262099996333,
+      "median_predict_seconds_including_preprocessing": 0.02714981249999937,
+      "median_predict_cpu_seconds": 0.04599368599999987,
+      "process_peak_rss_mib": 177.12109375,
+      "model_files_mib": 0.9444513320922852,
+      "whole_process_seconds_including_imports": 4.200077394999994
+    },
+    {
+      "model": "randomforest",
+      "records": 1,
+      "repeats": 20,
+      "model_load_seconds_excluding_imports": 1.0415931910000609,
+      "median_predict_seconds_including_preprocessing": 0.15317317400001684,
+      "median_predict_cpu_seconds": 0.10171777649999969,
+      "process_peak_rss_mib": 348.9921875,
+      "model_files_mib": 20.642066955566406,
+      "whole_process_seconds_including_imports": 7.192915158999995
+    },
+    {
+      "model": "both",
+      "records": 1,
+      "repeats": 20,
+      "model_load_seconds_excluding_imports": 1.3363555900000392,
+      "median_predict_seconds_including_preprocessing": 0.13344422149998536,
+      "median_predict_cpu_seconds": 0.1336477555000002,
+      "process_peak_rss_mib": 360.7890625,
+      "model_files_mib": 21.58651828765869,
+      "whole_process_seconds_including_imports": 8.836727575000054
+    },
+    {
+      "model": "xgboost",
+      "records": 82332,
+      "repeats": 3,
+      "model_load_seconds_excluding_imports": 0.07208772600006341,
+      "median_predict_seconds_including_preprocessing": 1.7361717359999602,
+      "median_predict_cpu_seconds": 2.7403881130000007,
+      "process_peak_rss_mib": 387.56640625,
+      "model_files_mib": 0.9444513320922852,
+      "whole_process_seconds_including_imports": 10.498335553999937
+    },
+    {
+      "model": "randomforest",
+      "records": 82332,
+      "repeats": 3,
+      "model_load_seconds_excluding_imports": 0.8467515109999795,
+      "median_predict_seconds_including_preprocessing": 2.6990083650000543,
+      "median_predict_cpu_seconds": 4.254124968999999,
+      "process_peak_rss_mib": 569.04296875,
+      "model_files_mib": 20.642066955566406,
+      "whole_process_seconds_including_imports": 14.678308948999984
+    },
+    {
+      "model": "both",
+      "records": 82332,
+      "repeats": 3,
+      "model_load_seconds_excluding_imports": 0.8962046660000169,
+      "median_predict_seconds_including_preprocessing": 4.477671917999942,
+      "median_predict_cpu_seconds": 7.025207148,
+      "process_peak_rss_mib": 578.82421875,
+      "model_files_mib": 21.58651828765869,
+      "whole_process_seconds_including_imports": 21.704366447999973
+    }
+  ]
+}

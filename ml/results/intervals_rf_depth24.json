@@ -1,0 +1,31 @@
+{
+  "method": "400 Poisson exact-feature-group bootstrap replications",
+  "seed": 42,
+  "scope": "descriptive 95% intervals on official test benchmark, conditional on fixed model; excludes training, tuning and real-network uncertainty",
+  "intervals": {
+    "accuracy": {
+      "lower": 0.8786908891474299,
+      "upper": 0.8848745497655814
+    },
+    "attack_precision": {
+      "lower": 0.8275357516359952,
+      "upper": 0.8381388638398855
+    },
+    "attack_recall": {
+      "lower": 0.9812493380308079,
+      "upper": 0.9844156536555122
+    },
+    "attack_f1": {
+      "lower": 0.8983385654985077,
+      "upper": 0.9048820813536731
+    },
+    "macro_f1": {
+      "lower": 0.8740039839301686,
+      "upper": 0.8795541462163649
+    },
+    "false_positive_rate": {
+      "lower": 0.2371901896056369,
+      "upper": 0.24684312393803093
+    }
+  }
+}

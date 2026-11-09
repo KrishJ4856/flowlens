@@ -1,0 +1,425 @@
+{
+  "checks_passed": 102,
+  "checks": [
+    {
+      "check": "Selection lock unchanged after test evaluation",
+      "passed": true
+    },
+    {
+      "check": "Experiment settings match frozen selection",
+      "passed": true
+    },
+    {
+      "check": "Canonical train file unchanged",
+      "passed": true
+    },
+    {
+      "check": "Canonical test file unchanged",
+      "passed": true
+    },
+    {
+      "check": "Demo input has no answer columns",
+      "passed": true
+    },
+    {
+      "check": "Demo records have no exact training-feature match",
+      "passed": true
+    },
+    {
+      "check": "No identical-feature groups cross fit/validation boundary",
+      "passed": true
+    },
+    {
+      "check": "Model checksum: dummy_majority",
+      "passed": true
+    },
+    {
+      "check": "Excluded columns leave prepared inputs exactly unchanged: dummy_majority",
+      "passed": true
+    },
+    {
+      "check": "Answers, ID and column order cannot change predictions: dummy_majority",
+      "passed": true
+    },
+    {
+      "check": "Scores invariant within 1e-12 floating-point tolerance: dummy_majority",
+      "passed": true
+    },
+    {
+      "check": "Missing input rejected: dummy_majority",
+      "passed": true
+    },
+    {
+      "check": "Invalid numeric input rejected: dummy_majority",
+      "passed": true
+    },
+    {
+      "check": "Unknown categories and missing values handled: dummy_majority",
+      "passed": true
+    },
+    {
+      "check": "Missing categories use saved imputation: dummy_majority",
+      "passed": true
+    },
+    {
+      "check": "Saved imputation fitted on complete train only: dummy_majority",
+      "passed": true
+    },
+    {
+      "check": "Saved encoding fitted on train categories only: dummy_majority",
+      "passed": true
+    },
+    {
+      "check": "Every official test row has a prediction: dummy_majority",
+      "passed": true
+    },
+    {
+      "check": "Confusion counts independently reconcile: dummy_majority",
+      "passed": true
+    },
+    {
+      "check": "Saved threshold reproduces predictions: dummy_majority",
+      "passed": true
+    },
+    {
+      "check": "Model checksum: logistic_baseline",
+      "passed": true
+    },
+    {
+      "check": "Excluded columns leave prepared inputs exactly unchanged: logistic_baseline",
+      "passed": true
+    },
+    {
+      "check": "Answers, ID and column order cannot change predictions: logistic_baseline",
+      "passed": true
+    },
+    {
+      "check": "Scores invariant within 1e-12 floating-point tolerance: logistic_baseline",
+      "passed": true
+    },
+    {
+      "check": "Missing input rejected: logistic_baseline",
+      "passed": true
+    },
+    {
+      "check": "Invalid numeric input rejected: logistic_baseline",
+      "passed": true
+    },
+    {
+      "check": "Unknown categories and missing values handled: logistic_baseline",
+      "passed": true
+    },
+    {
+      "check": "Missing categories use saved imputation: logistic_baseline",
+      "passed": true
+    },
+    {
+      "check": "Saved imputation fitted on complete train only: logistic_baseline",
+      "passed": true
+    },
+    {
+      "check": "Saved encoding fitted on train categories only: logistic_baseline",
+      "passed": true
+    },
+    {
+      "check": "Every official test row has a prediction: logistic_baseline",
+      "passed": true
+    },
+    {
+      "check": "Confusion counts independently reconcile: logistic_baseline",
+      "passed": true
+    },
+    {
+      "check": "Saved threshold reproduces predictions: logistic_baseline",
+      "passed": true
+    },
+    {
+      "check": "Model checksum: rf_depth24",
+      "passed": true
+    },
+    {
+      "check": "Excluded columns leave prepared inputs exactly unchanged: rf_depth24",
+      "passed": true
+    },
+    {
+      "check": "Answers, ID and column order cannot change predictions: rf_depth24",
+      "passed": true
+    },
+    {
+      "check": "Scores invariant within 1e-12 floating-point tolerance: rf_depth24",
+      "passed": true
+    },
+    {
+      "check": "Missing input rejected: rf_depth24",
+      "passed": true
+    },
+    {
+      "check": "Invalid numeric input rejected: rf_depth24",
+      "passed": true
+    },
+    {
+      "check": "Unknown categories and missing values handled: rf_depth24",
+      "passed": true
+    },
+    {
+      "check": "Missing categories use saved imputation: rf_depth24",
+      "passed": true
+    },
+    {
+      "check": "Saved imputation fitted on complete train only: rf_depth24",
+      "passed": true
+    },
+    {
+      "check": "Saved encoding fitted on train categories only: rf_depth24",
+      "passed": true
+    },
+    {
+      "check": "Every official test row has a prediction: rf_depth24",
+      "passed": true
+    },
+    {
+      "check": "Confusion counts independently reconcile: rf_depth24",
+      "passed": true
+    },
+    {
+      "check": "Saved threshold reproduces predictions: rf_depth24",
+      "passed": true
+    },
+    {
+      "check": "Model checksum: xgb_depth7",
+      "passed": true
+    },
+    {
+      "check": "Excluded columns leave prepared inputs exactly unchanged: xgb_depth7",
+      "passed": true
+    },
+    {
+      "check": "Answers, ID and column order cannot change predictions: xgb_depth7",
+      "passed": true
+    },
+    {
+      "check": "Scores invariant within 1e-12 floating-point tolerance: xgb_depth7",
+      "passed": true
+    },
+    {
+      "check": "Missing input rejected: xgb_depth7",
+      "passed": true
+    },
+    {
+      "check": "Invalid numeric input rejected: xgb_depth7",
+      "passed": true
+    },
+    {
+      "check": "Unknown categories and missing values handled: xgb_depth7",
+      "passed": true
+    },
+    {
+      "check": "Missing categories use saved imputation: xgb_depth7",
+      "passed": true
+    },
+    {
+      "check": "Saved imputation fitted on complete train only: xgb_depth7",
+      "passed": true
+    },
+    {
+      "check": "Saved encoding fitted on train categories only: xgb_depth7",
+      "passed": true
+    },
+    {
+      "check": "Every official test row has a prediction: xgb_depth7",
+      "passed": true
+    },
+    {
+      "check": "Confusion counts independently reconcile: xgb_depth7",
+      "passed": true
+    },
+    {
+      "check": "Saved threshold reproduces predictions: xgb_depth7",
+      "passed": true
+    },
+    {
+      "check": "Native XGBoost serialization matches bundle: xgb_depth7",
+      "passed": true
+    },
+    {
+      "check": "Model checksum: multiclass_dummy",
+      "passed": true
+    },
+    {
+      "check": "Excluded columns leave prepared inputs exactly unchanged: multiclass_dummy",
+      "passed": true
+    },
+    {
+      "check": "Answers, ID and column order cannot change predictions: multiclass_dummy",
+      "passed": true
+    },
+    {
+      "check": "Scores invariant within 1e-12 floating-point tolerance: multiclass_dummy",
+      "passed": true
+    },
+    {
+      "check": "Missing input rejected: multiclass_dummy",
+      "passed": true
+    },
+    {
+      "check": "Invalid numeric input rejected: multiclass_dummy",
+      "passed": true
+    },
+    {
+      "check": "Unknown categories and missing values handled: multiclass_dummy",
+      "passed": true
+    },
+    {
+      "check": "Missing categories use saved imputation: multiclass_dummy",
+      "passed": true
+    },
+    {
+      "check": "Saved imputation fitted on complete train only: multiclass_dummy",
+      "passed": true
+    },
+    {
+      "check": "Saved encoding fitted on train categories only: multiclass_dummy",
+      "passed": true
+    },
+    {
+      "check": "Every official test row has a prediction: multiclass_dummy",
+      "passed": true
+    },
+    {
+      "check": "Model checksum: multiclass_rf_balanced",
+      "passed": true
+    },
+    {
+      "check": "Excluded columns leave prepared inputs exactly unchanged: multiclass_rf_balanced",
+      "passed": true
+    },
+    {
+      "check": "Answers, ID and column order cannot change predictions: multiclass_rf_balanced",
+      "passed": true
+    },
+    {
+      "check": "Scores invariant within 1e-12 floating-point tolerance: multiclass_rf_balanced",
+      "passed": true
+    },
+    {
+      "check": "Missing input rejected: multiclass_rf_balanced",
+      "passed": true
+    },
+    {
+      "check": "Invalid numeric input rejected: multiclass_rf_balanced",
+      "passed": true
+    },
+    {
+      "check": "Unknown categories and missing values handled: multiclass_rf_balanced",
+      "passed": true
+    },
+    {
+      "check": "Missing categories use saved imputation: multiclass_rf_balanced",
+      "passed": true
+    },
+    {
+      "check": "Saved imputation fitted on complete train only: multiclass_rf_balanced",
+      "passed": true
+    },
+    {
+      "check": "Saved encoding fitted on train categories only: multiclass_rf_balanced",
+      "passed": true
+    },
+    {
+      "check": "Every official test row has a prediction: multiclass_rf_balanced",
+      "passed": true
+    },
+    {
+      "check": "Model checksum: multiclass_xgb_weighted",
+      "passed": true
+    },
+    {
+      "check": "Excluded columns leave prepared inputs exactly unchanged: multiclass_xgb_weighted",
+      "passed": true
+    },
+    {
+      "check": "Answers, ID and column order cannot change predictions: multiclass_xgb_weighted",
+      "passed": true
+    },
+    {
+      "check": "Scores invariant within 1e-12 floating-point tolerance: multiclass_xgb_weighted",
+      "passed": true
+    },
+    {
+      "check": "Missing input rejected: multiclass_xgb_weighted",
+      "passed": true
+    },
+    {
+      "check": "Invalid numeric input rejected: multiclass_xgb_weighted",
+      "passed": true
+    },
+    {
+      "check": "Unknown categories and missing values handled: multiclass_xgb_weighted",
+      "passed": true
+    },
+    {
+      "check": "Missing categories use saved imputation: multiclass_xgb_weighted",
+      "passed": true
+    },
+    {
+      "check": "Saved imputation fitted on complete train only: multiclass_xgb_weighted",
+      "passed": true
+    },
+    {
+      "check": "Saved encoding fitted on train categories only: multiclass_xgb_weighted",
+      "passed": true
+    },
+    {
+      "check": "Every official test row has a prediction: multiclass_xgb_weighted",
+      "passed": true
+    },
+    {
+      "check": "Native XGBoost serialization matches bundle: multiclass_xgb_weighted",
+      "passed": true
+    },
+    {
+      "check": "Fresh-process command-line prediction succeeds",
+      "passed": true
+    },
+    {
+      "check": "Seven frozen models evaluated",
+      "passed": true
+    },
+    {
+      "check": "Prepared train inputs and answers stay separate",
+      "passed": true
+    },
+    {
+      "check": "Prepared train answers match raw source",
+      "passed": true
+    },
+    {
+      "check": "Prepared train transformation matches saved preparation",
+      "passed": true
+    },
+    {
+      "check": "Prepared test inputs and answers stay separate",
+      "passed": true
+    },
+    {
+      "check": "Prepared test answers match raw source",
+      "passed": true
+    },
+    {
+      "check": "Prepared test transformation matches saved preparation",
+      "passed": true
+    }
+  ],
+  "prediction_command_output": "Model: xgb_depth7; records: 30; saved: /home/krish/Documents/Codex/2026-11-04/so/outputs/network-ids/results/demo_predictions.csv\npredicted_label\nAttack    18\nNormal    12\n",
+  "score_invariance_absolute_tolerance": 1e-12,
+  "observed_max_score_differences": {
+    "dummy_majority": 0.0,
+    "logistic_baseline": 0.0,
+    "rf_depth24": 2.220446049250313e-16,
+    "xgb_depth7": 0.0,
+    "multiclass_dummy": 0.0,
+    "multiclass_rf_balanced": 1.1102230246251565e-16,
+    "multiclass_xgb_weighted": 0.0
+  },
+  "numerical_note": "Parallel forest prediction can sum trees in a different order and change scores in the last floating-point bits. Prepared input arrays must be exactly equal, class predictions must match, and scores must match within 1e-12."
+}

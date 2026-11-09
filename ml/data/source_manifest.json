@@ -1,0 +1,60 @@
+{
+  "official_dataset_page": "https://research.unsw.edu.au/projects/unsw-nb15-dataset",
+  "official_download_status": "SharePoint redirected to sign-in on retrieval attempt; downloaded public mirror instead.",
+  "mirror_repository": "https://github.com/jamshaid120/UNSW_NB15-Complete-dataset",
+  "mirror_commit": "161024104f19eea98b5c9aba0499a8fcb867ba1d",
+  "files": [
+    {
+      "file": "data/raw/UNSW_NB15_testing-set.csv",
+      "source_url": "https://media.githubusercontent.com/media/jamshaid120/UNSW_NB15-Complete-dataset/161024104f19eea98b5c9aba0499a8fcb867ba1d/UNSW_NB15_testing-set.csv",
+      "sha256": "bec7dd5ec88dc2a0ccc7a07879d338395ed7421750f675fd0339e07dfe0648fa",
+      "bytes": 32293018,
+      "github_blob_sha": "e8df93da89d1f0342f506b2c2e50cbe2c87784a9"
+    },
+    {
+      "file": "data/raw/UNSW_NB15_training-set.csv",
+      "source_url": "https://media.githubusercontent.com/media/jamshaid120/UNSW_NB15-Complete-dataset/161024104f19eea98b5c9aba0499a8fcb867ba1d/UNSW_NB15_training-set.csv",
+      "sha256": "734fe6642edf758f7c94d7d9149426b49d202fe8e7bf0bef47392489c3c0a559",
+      "bytes": 15380800,
+      "github_blob_sha": "3a27c875b3a0dfdb2d06b546f704339c32624187"
+    },
+    {
+      "file": "data/raw/NUSW-NB15_features.csv",
+      "source_url": "https://media.githubusercontent.com/media/jamshaid120/UNSW_NB15-Complete-dataset/161024104f19eea98b5c9aba0499a8fcb867ba1d/NUSW-NB15_features.csv",
+      "sha256": "c55f19cceebb6360dc50f44f8a5f246ccefbcf8a6c604ac1ad46e643869cafce",
+      "bytes": 4044,
+      "github_blob_sha": "405fe7847ce8f10209bbe083b71126df88c22670"
+    }
+  ],
+  "team_attachment": {
+    "sha256": "bec7dd5ec88dc2a0ccc7a07879d338395ed7421750f675fd0339e07dfe0648fa",
+    "bytes": 32293018,
+    "source": "Infinity 5 WhatsApp, Aniket, 2026-11-04 21:09 IST",
+    "copied_from": "previously downloaded team attachment"
+  },
+  "partition_resolution": {
+    "UNSW_NB15_training-set.csv": {
+      "rows": 82332,
+      "columns": 45,
+      "semantically_equals_team_training": false
+    },
+    "UNSW_NB15_testing-set.csv": {
+      "rows": 175341,
+      "columns": 45,
+      "semantically_equals_team_training": true
+    }
+  },
+  "canonical_test": {
+    "path": "data/raw/test.csv",
+    "mirror_filename": "UNSW_NB15_training-set.csv",
+    "rows": 82332,
+    "sha256": "734fe6642edf758f7c94d7d9149426b49d202fe8e7bf0bef47392489c3c0a559"
+  },
+  "canonical_train": {
+    "path": "data/raw/train.csv",
+    "source": "team_attachment",
+    "rows": 175341,
+    "sha256": "bec7dd5ec88dc2a0ccc7a07879d338395ed7421750f675fd0339e07dfe0648fa"
+  },
+  "partition_warning": "Mirror filenames are reversed relative to the official 175341 train / 82332 test counts. Resolved by row count and exact equality of the 175341-row mirror file with the team attachment; neither file split nor merged."
+}

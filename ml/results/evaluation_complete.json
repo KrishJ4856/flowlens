@@ -1,0 +1,17 @@
+{
+  "selection_lock_sha256": "e463ad976f18f305e7e4598a004ef8f8b2e24c2da2123ec5eb265ed7133ce29e",
+  "elapsed_seconds": 37.78146615999867,
+  "models_evaluated": [
+    "dummy_majority",
+    "logistic_baseline",
+    "rf_depth24",
+    "xgb_depth7",
+    "multiclass_dummy",
+    "multiclass_rf_balanced",
+    "multiclass_xgb_weighted"
+  ],
+  "test_rows": 82332,
+  "unseen_feature_test_rows": 73791,
+  "no_retuning_policy": "Models and thresholds were frozen before this evaluation. Report all results including failures.",
+  "demo_policy": "30 fixed random held-out test records with no exact training-feature match, 15 normal and 15 attack; labels excluded from input CSV and stored separately."
+}

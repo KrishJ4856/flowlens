@@ -1,0 +1,10 @@
+{
+  "folds": 3,
+  "split_seed": 123,
+  "model_seed": 42,
+  "stratified_by": "attack_cat",
+  "grouped_by": "exact 42-feature vector",
+  "threshold": 0.5,
+  "test_data_read": false,
+  "interpretation": "Training-partition stability diagnostic for already selected hyperparameters; not nested CV, not an independent estimate and not used to change model selection."
+}

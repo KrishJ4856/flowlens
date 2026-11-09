@@ -1,0 +1,24 @@
+[
+  {
+    "name": "rf_depth24",
+    "task": "binary",
+    "family": "random_forest",
+    "path": "models/rf_depth24.joblib",
+    "champion": false,
+    "full_refit_seconds": 73.60347127699788,
+    "threshold": 0.55,
+    "sha256": "960f2e54aa14753f8cec6e0484a18d7813230b1775efebb34522fd4c26c5d63a",
+    "bytes": 21644776
+  },
+  {
+    "name": "xgb_depth7",
+    "task": "binary",
+    "family": "xgboost",
+    "path": "models/xgb_depth7.joblib",
+    "champion": true,
+    "full_refit_seconds": 56.08860224499949,
+    "threshold": 0.5,
+    "sha256": "5f4dfba4fd7f227ef8a95d382c19afc4e597eb91c90ba9a60b2bdd6b7c8094e3",
+    "bytes": 990329
+  }
+]

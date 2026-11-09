@@ -1,0 +1,18 @@
+{
+  "labels": [
+    "Normal",
+    "Attack"
+  ],
+  "matrix": [
+    [
+      27067,
+      8461
+    ],
+    [
+      769,
+      37494
+    ]
+  ],
+  "rows": "actual",
+  "columns": "predicted"
+}
