@@ -1,5 +1,7 @@
 # FlowLens
 
+**Live website: [flowlens-pied.vercel.app](https://flowlens-pied.vercel.app/)**
+
 **A guided network traffic lab, powered by real XGBoost and Random Forest models.**
 
 Explore recorded network flows, edit their measurements, compare two learned detectors, and understand the results without needing an ML background. Built for a BCA minor-project presentation.
