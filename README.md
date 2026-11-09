@@ -32,22 +32,22 @@ Next.js exports the complete site to `out/`. Deploy to Vercel by importing this 
 
 ## Start with these files
 
-| Folder | Contents |
-| --- | --- |
-| `src/app/` | Next.js routes and page content |
-| `src/components/` | Shared UI and shadcn/ui components |
-| `src/lib/features.ts` | Measurement grouping and plain-language explanations |
-| `public/inference.mjs` | Browser preprocessing and fitted-tree traversal |
-| `public/model-worker.js` | Model download, integrity check and background inference |
-| `public/models/` | Gzipped fitted-tree arrays and exact preprocessing metadata |
-| `public/data/` | Paged benchmark data, samples and real analysis results |
-| `ml/data/raw/` | Canonical `train.csv` and `test.csv` plus feature dictionary |
-| `ml/models/` | The two original Python model bundles and saved preprocessor |
-| `ml/src/`, `ml/scripts/`, `ml/config/` | Original experiment source and configuration |
-| `ml/results/` | Original metrics, binary predictions, audits and frozen selection |
-| `scripts/export_assets.py` | Deterministically exports the original fitted models and site data |
-| `tests/` | Inference parity, input validation and complete data/filter integrity checks |
-| `docs/` | Methods, report, model card, poster text, speaking notes and figures |
+| Folder                                 | Contents                                                                     |
+| -------------------------------------- | ---------------------------------------------------------------------------- |
+| `src/app/`                             | Next.js routes and page content                                              |
+| `src/components/`                      | Shared UI and shadcn/ui components                                           |
+| `src/lib/features.ts`                  | Measurement grouping and plain-language explanations                         |
+| `public/inference.mjs`                 | Browser preprocessing and fitted-tree traversal                              |
+| `public/model-worker.js`               | Model download, integrity check and background inference                     |
+| `public/models/`                       | Gzipped fitted-tree arrays and exact preprocessing metadata                  |
+| `public/data/`                         | Paged benchmark data, samples and real analysis results                      |
+| `ml/data/raw/`                         | Canonical `train.csv` and `test.csv` plus feature dictionary                 |
+| `ml/models/`                           | The two original Python model bundles and saved preprocessor                 |
+| `ml/src/`, `ml/scripts/`, `ml/config/` | Original experiment source and configuration                                 |
+| `ml/results/`                          | Original metrics, binary predictions, audits and frozen selection            |
+| `scripts/export_assets.py`             | Deterministically exports the original fitted models and site data           |
+| `tests/`                               | Inference parity, input validation and complete data/filter integrity checks |
+| `docs/`                                | Methods, report, model card, poster text, speaking notes and figures         |
 
 The original experiment also compared baselines and an attack-category extension. Its full report is retained for context; this repository bundles the **two main binary detector models**. Extra model binaries, duplicate raw source files and regenerated prepared arrays were omitted. The original full-experiment verifier expects all seven bundles; see `ml/README.md` before using those scripts.
 
@@ -65,10 +65,10 @@ Models download only on the playground, about **6.8 MiB combined**. Inputs remai
 
 Measured on the complete separate test partition; settings and cutoffs were chosen using validation first.
 
-| Model | Accuracy | Attack recall | False positive rate | Cutoff |
-| --- | ---: | ---: | ---: | ---: |
-| XGBoost | 87.12% | 98.12% | 26.36% | 0.50 |
-| Random Forest | 88.20% | 98.28% | 24.16% | 0.55 |
+| Model         | Accuracy | Attack recall | False positive rate | Cutoff |
+| ------------- | -------: | ------------: | ------------------: | -----: |
+| XGBoost       |   87.12% |        98.12% |              26.36% |   0.50 |
+| Random Forest |   88.20% |        98.28% |              24.16% |   0.55 |
 
 XGBoost was selected using validation; Random Forest was slightly better on the final test. Around one in four normal records was falsely flagged. Scores are **uncalibrated model scores**, not verified real-world risk percentages. This is offline benchmark classification, not established live-network protection.
 
